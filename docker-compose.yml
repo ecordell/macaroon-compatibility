@@ -1,0 +1,6 @@
+test:
+  build: .
+  command: /bin/bash
+  working_dir: /usr/src
+  volumes:
+    - .:/usr/src
