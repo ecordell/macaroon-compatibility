@@ -1,6 +1,9 @@
 import subprocess
 import os
 import functools
+import collections
+
+import pytest
 
 implementations = [
     'libmacaroons',
@@ -9,34 +12,19 @@ implementations = [
     'macaroons-js',
 ]
 
-
-class NonCanonicalMacaroonException(Exception):
-    pass
+BasicMacaroonArgs = collections.namedtuple('BasicMacaroonArgs', 'location key id')
 
 
-def all_results_equal(command, args):
-    paths = {
-        impl: os.path.join(impl, command)
-        for impl in implementations
-    }
-    results = {
-        impl: subprocess.check_output([path] + args)
-        if os.path.isfile(path) else None
-        for impl, path in paths.items()
-    }
-    canonical = results['libmacaroons']
-    for impl, r in results.items():
-        if r and r != canonical:
-            raise NonCanonicalMacaroonException(
-                '{impl} {command} differs from canonical.'
-                '\nExpected: {ex}\nGot: {got}'.format(
-                    impl=impl, command=command, ex=canonical, got=r
-                )
-            )
-    return True
+@functools.lru_cache(typed=True)
+def execute_command(implementation, command, args):
+    path = os.path.join(implementation, command)
+    return subprocess.check_output([path] + list(args)) if os.path.isfile(path) else None
 
 
-def test_basic_macaroon_equality():
+@pytest.mark.parametrize("implementation", implementations)
+def test_basic_macaroon_equality(implementation):
     command = 'create_basic_macaroon'
-    args = ['loc', 'key', 'id']
-    assert(all_results_equal(command, args))
+    args = BasicMacaroonArgs(location='loc', key='key', id='id')
+    canonical = execute_command('libmacaroons', command, args)
+    result = execute_command(implementation, command, args)
+    assert(result == canonical)
