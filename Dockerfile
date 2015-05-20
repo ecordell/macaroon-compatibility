@@ -58,11 +58,13 @@ RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
     apt-get install -y python-macaroons && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+WORKDIR /usr/src
+
 # Install pymacaroons
-RUN pip3 install pymacaroons
+RUN pip3 install pymacaroons pytest
 
 # Install ruby-macaroons
 RUN gem install macaroons
 
 # Install macaroons.js
-RUN npm install -g macaroons.js
+RUN npm install macaroons.js

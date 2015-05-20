@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# script arguments: location key id
+
+require 'macaroons'
+
+location = ARGV[0]
+key = ARGV[1]
+identifier = ARGV[2]
+
+m = Macaroon.new(key: key, identifier: identifier, location: location)
+
+puts m.serialize()
