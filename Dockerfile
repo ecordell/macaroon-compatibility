@@ -6,7 +6,7 @@ RUN apt-get clean all && apt-get update && apt-get upgrade -y
 
 # Build Tools
 RUN apt-get install -y build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev && \
-    apt-get install -y make wget tar git && \
+    apt-get install -y make wget tar git curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ## Install libsodium
@@ -52,6 +52,11 @@ RUN apt-get update && \
 ENV GOROOT /usr/lib/go
 ENV GOPATH /usr/src/go-macaroon
 
+# Install PHP
+RUN apt-get update && \
+    apt-get install -y php5 php5-dev php-pear && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Install libmacaroons
 RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
     echo "deb [arch=amd64] http://ubuntu.hyperdex.org trusty main" >> /etc/apt/sources.list.d/hyperdex.list && \
@@ -60,6 +65,9 @@ RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /usr/src
+
+# Add source
+ADD . /usr/src
 
 # Install pymacaroons
 RUN pip3 install pymacaroons pytest
@@ -75,3 +83,10 @@ RUN go get launchpad.net/gorun && \
     go get gopkg.in/macaroon.v1 && \
     go get gopkg.in/macaroon-bakery.v1/bakery
 
+# Install php-macaroons
+RUN pecl install libsodium-0.1.3 && \
+    echo "extension=libsodium.so" >> /etc/php5/cli/php.ini && \
+    curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/bin/composer && \
+    cd php-macaroons && \
+    composer install

@@ -11,6 +11,7 @@ implementations = [
     'ruby-macaroons',
     'macaroons-js',
     'go-macaroon',
+    'php-macaroons',
 ]
 
 BasicMacaroonArgs = collections.namedtuple('BasicMacaroonArgs', 'location key id')

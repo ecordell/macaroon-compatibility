@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+// script arguments: location key id
+
+require 'vendor/autoload.php';
+use Macaroons\Macaroon;
+
+$location = $argv[1];
+$key = $argv[2];
+$id = $argv[3];
+
+$m = new Macaroon($key, $id, $location);
+
+echo $m->getSignature() . "\n"
+
+?>
