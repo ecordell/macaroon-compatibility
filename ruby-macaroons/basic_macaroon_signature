@@ -10,4 +10,4 @@ identifier = ARGV[2]
 
 m = Macaroon.new(key: key, identifier: identifier, location: location)
 
-puts m.serialize()
+puts m.signature

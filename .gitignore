@@ -1,3 +1,9 @@
 /__pycache__/
 
 /node_modules/
+
+/go/
+
+/go-macaroon/src/
+
+/go-macaroon/pkg/

@@ -45,11 +45,12 @@ RUN wget -q "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64
   && npm install -g npm@"$NPM_VERSION" \
   && npm cache clear
 
+# Install Go
 RUN apt-get update && \
-    apt-get install -y python python-dev python-software-properties && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py --no-check-certificate -O - | python && \
-    wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py --no-check-certificate -O - | python
+    apt-get install -y golang bzr && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ENV GOROOT /usr/lib/go
+ENV GOPATH /usr/src/go-macaroon
 
 # Install libmacaroons
 RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
@@ -68,3 +69,9 @@ RUN gem install macaroons
 
 # Install macaroons.js
 RUN npm install macaroons.js
+
+# Install go-macaroons
+RUN go get launchpad.net/gorun && \
+    go get gopkg.in/macaroon.v1 && \
+    go get gopkg.in/macaroon-bakery.v1/bakery
+

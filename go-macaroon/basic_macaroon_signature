@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/env go run "$0.go" $@ ; exit

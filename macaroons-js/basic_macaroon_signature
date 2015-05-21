@@ -9,4 +9,4 @@ var key = process.argv[3];
 var identifier = process.argv[4];
 var macaroon = MacaroonsBuilder.create(location, key, identifier);
 
-console.log(macaroon.serialize());
+console.log(macaroon.signature);

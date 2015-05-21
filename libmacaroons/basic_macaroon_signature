@@ -13,7 +13,7 @@ def main(argv):
     id = argv[2]
 
     m = macaroons.create(location, key, id)
-    print m.serialize()
+    print m.signature
     exit(0)
 
 if __name__ == "__main__":

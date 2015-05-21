@@ -10,6 +10,7 @@ implementations = [
     'pymacaroons',
     'ruby-macaroons',
     'macaroons-js',
+    'go-macaroon',
 ]
 
 BasicMacaroonArgs = collections.namedtuple('BasicMacaroonArgs', 'location key id')
@@ -22,8 +23,8 @@ def execute_command(implementation, command, args):
 
 
 @pytest.mark.parametrize("implementation", implementations)
-def test_basic_macaroon_equality(implementation):
-    command = 'create_basic_macaroon'
+def test_basic_signature_equality(implementation):
+    command = 'basic_macaroon_signature'
     args = BasicMacaroonArgs(location='loc', key='key', id='id')
     canonical = execute_command('libmacaroons', command, args)
     result = execute_command(implementation, command, args)
