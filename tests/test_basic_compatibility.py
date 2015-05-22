@@ -1,7 +1,6 @@
 import subprocess
 import os
 import functools
-import collections
 
 import pytest
 
@@ -14,13 +13,6 @@ implementations = [
     'php-macaroons',
     'rust-macaroons',
 ]
-
-BasicMacaroonArgs = collections.namedtuple(
-    'BasicMacaroonArgs', 'location key id'
-)
-BasicFirstPartyArgs = collections.namedtuple(
-    'BasicFirstPartyArgs', 'location key id caveat'
-)
 
 
 @functools.lru_cache(typed=True)
@@ -35,19 +27,21 @@ def execute_command(implementation, command, args):
         return None
 
 
+def equal_to_canonical(implementation, command, args, canonical=None):
+    canonical = canonical or execute_command('libmacaroons', command, args)
+    result = execute_command(implementation, command, args)
+    assert(result == canonical)
+
+
 @pytest.mark.parametrize("implementation", implementations)
 def test_basic_signature_equality(implementation):
     command = 'basic_macaroon_signature'
-    args = BasicMacaroonArgs(location='loc', key='key', id='id')
-    canonical = execute_command('libmacaroons', command, args)
-    result = execute_command(implementation, command, args)
-    assert(result == canonical)
+    args = ('loc', 'key', 'id')
+    equal_to_canonical(implementation, command, args)
 
 
 @pytest.mark.parametrize("implementation", implementations)
 def test_first_party_caveat_signature(implementation):
     command = 'first_party_caveat_signature'
-    args = BasicFirstPartyArgs(location='loc', key='key', id='id', caveat='first_party')
-    canonical = execute_command('libmacaroons', command, args)
-    result = execute_command(implementation, command, args)
-    assert(result == canonical)
+    args = ('loc', 'key', 'id', 'first_party')
+    equal_to_canonical(implementation, command, args)
