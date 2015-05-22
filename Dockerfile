@@ -76,7 +76,7 @@ RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
 WORKDIR /usr/src
 
 # Install pymacaroons
-RUN pip3 install pymacaroons pytest
+RUN pip3 install pymacaroons pytest pytest-html
 
 # Install ruby-macaroons
 RUN gem install macaroons

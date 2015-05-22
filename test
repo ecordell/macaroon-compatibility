@@ -3,4 +3,4 @@
 # Rust currently has no convenient way to run directly
 ./bin/build-rust
 
-py.test -vv --html=report.html
+py.test -vv

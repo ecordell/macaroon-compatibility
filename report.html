@@ -1,0 +1,443 @@
+<!DOCTYPE html><html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <style>body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	min-width: 1200px;
+	color: #999;
+}
+h2 {
+	font-size: 16px;
+	color: black;
+}
+
+p {
+    color: black;
+}
+
+a {
+	color: #999;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+/******************************
+ * SUMMARY INFORMATION
+ ******************************/
+
+#environment td {
+	padding: 5px;
+	border: 1px solid #E6E6E6;
+}
+
+#environment tr:nth-child(odd) {
+	background-color: #f6f6f6;
+}
+
+/******************************
+ * TEST RESULT COLORS
+ ******************************/
+span.passed, .passed .col-result {
+	color: green;
+}
+span.skipped, span.xfailed, .skipped .col-result, .xfailed .col-result {
+	color: orange;
+}
+span.error, span.failed, span.xpassed, .failed .col-result, .xpassed .col-result  {
+	color: red;
+}
+
+
+/******************************
+ * RESULTS TABLE
+ * 
+ * 1. Table Layout
+ * 2. Extra
+ * 3. Sorting items
+ * 
+ ******************************/
+
+/*------------------
+ * 1. Table Layout
+ *------------------*/
+
+#results-table {
+	border: 1px solid #e6e6e6;
+	color: #999;
+	font-size: 12px;
+	width: 100%
+}
+
+#results-table th, #results-table td {
+	padding: 5px;
+	border: 1px solid #E6E6E6;
+	text-align: left
+}
+#results-table th {
+	font-weight: bold
+}
+
+/*------------------
+ * 2. Extra
+ *------------------*/
+
+.log:only-child {
+	height: inherit
+}
+.log {
+	background-color: #e6e6e6;
+	border: 1px solid #e6e6e6;
+	color: black;
+	display: block;
+	font-family: "Courier New", Courier, monospace;
+	height: 230px;
+	overflow-y: scroll;
+	padding: 5px;
+	white-space: pre-wrap
+}
+div.image {
+	border: 1px solid #e6e6e6;
+	float: right;
+	height: 240px;
+	margin-left: 5px;
+	overflow: hidden;
+	width: 320px
+}
+div.image img {
+	width: 320px
+}
+
+/*if the result is passed or xpassed don't show extra row*/
+.passed + .extra, .xpassed + .extra {
+	display: none;
+}
+
+/*------------------
+ * 3. Sorting items
+ *------------------*/
+.sortable {
+	cursor: pointer;
+}
+
+.sort-icon {
+	font-size: 0px;
+	float: left;
+	margin-right: 5px;
+	margin-top: 5px;
+	/*triangle*/
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+}
+
+.inactive .sort-icon {
+	/*finish triangle*/
+	border-top: 8px solid #E6E6E6;
+}
+
+.asc.active .sort-icon {
+	/*finish triangle*/
+	border-bottom: 8px solid #999;
+}
+
+.desc.active .sort-icon {
+	/*finish triangle*/
+	border-top: 8px solid #999;
+}
+</style></head>
+  <body>
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+addEventListener("DOMContentLoaded", function() {
+    reset_sort_headers();
+
+    split_extra_onto_two_rows();
+    sort_column(find('.initial-sort'));
+
+    find_all('.col-links a.image').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  var node = elem;
+                                  while (node && !node.classList.contains('results-table-row')) {
+                                      node = node.parentNode;
+                                  }
+                                  if (node != null) {
+                                      if (node.nextSibling &&
+                                          node.nextSibling.classList.contains("extra")) {
+                                          var href = find('.image img', node.nextSibling).src;
+                                          window.open(href);
+                                      }
+                                  }
+                                  event.preventDefault();
+                              }, false)
+    });
+
+    find_all('.image a').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  window.open(find('img', elem).getAttribute('src'));
+                                  event.preventDefault();
+                              }, false)
+    });
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+});
+
+function sort_table(clicked, key_func) {
+    one_row_for_data();
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+
+    var sorted_rows = sort(rows, key_func, reversed);
+
+    var parent = document.getElementById('results-table-body');
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+
+    split_extra_onto_two_rows();
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+    var multiplier = reversed ? -1 : 1;
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+        return multiplier * (key_a >= key_b ? 1 : -1);
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'XFailed', 'XPassed', 'Skipped',
+                       'Passed'];
+        return strings.indexOf(elem.childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function split_extra_onto_two_rows() {
+    find_all('tr.results-table-row').forEach(function(elem) {
+        var new_row = document.createElement("tr")
+        new_row.className = "extra";
+        elem.parentNode.insertBefore(new_row, elem.nextSibling);
+        find_all(".extra", elem).forEach(function (td_elem) {
+            if (find(".log", td_elem)) {
+                new_row.appendChild(td_elem);
+                td_elem.colSpan=5;
+            } else {
+                td_elem.parentNode.removeChild(td_elem);
+            }
+        });
+    });
+}
+
+function one_row_for_data() {
+    find_all('tr.results-table-row').forEach(function(elem) {
+        if (elem.nextSibling.classList.contains('extra')) {
+            toArray(elem.nextSibling.childNodes).forEach(
+                function (td_elem) {
+                    elem.appendChild(td_elem);
+                })
+        } else {
+            var new_td = document.createElement("td");
+            new_td.className = "extra";
+            elem.appendChild(new_td);
+        }
+    });
+}
+</script>
+    <p>Report generated on 22-May-2015 at 17:52:56</p>
+    <h2>Summary</h2>
+    <p>14 tests ran in 2.00 seconds.<br/><span class="passed">13 passed</span>, <span class="skipped">0 skipped</span>, <span class="failed">1 failed</span>, <span class="error">0 errors</span>.<br/><span class="skipped">0 expected failures</span>, <span class="failed">0 unexpected passes</span>.</p>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable initial-sort result" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr></thead>
+      <tbody id="results-table-body">
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[libmacaroons]</td>
+          <td class="col-duration">0.02</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[pymacaroons]</td>
+          <td class="col-duration">0.06</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[ruby-macaroons]</td>
+          <td class="col-duration">0.09</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[macaroons-js]</td>
+          <td class="col-duration">0.13</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[go-macaroon]</td>
+          <td class="col-duration">0.37</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[php-macaroons]</td>
+          <td class="col-duration">0.02</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[rust-macaroons]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[libmacaroons]</td>
+          <td class="col-duration">0.02</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[pymacaroons]</td>
+          <td class="col-duration">0.05</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[ruby-macaroons]</td>
+          <td class="col-duration">0.09</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[macaroons-js]</td>
+          <td class="col-duration">0.13</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[go-macaroon]</td>
+          <td class="col-duration">0.35</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="passed results-table-row">
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[php-macaroons]</td>
+          <td class="col-duration">0.02</td>
+          <td class="col-links"></td>
+          <td class="extra"></td></tr>
+        <tr class="failed results-table-row">
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[rust-macaroons]</td>
+          <td class="col-duration">0.02</td>
+          <td class="col-links"></td>
+          <td class="extra">
+            <div class="log">implementation = &#x27;rust-macaroons&#x27;<br/><br/>    @pytest.mark.parametrize(&quot;implementation&quot;, implementations)<br/>    def test_first_party_caveat_signature(implementation):<br/>        command = &#x27;first_party_caveat_signature&#x27;<br/>        args = (&#x27;loc&#x27;, &#x27;key&#x27;, &#x27;id&#x27;, &#x27;first_party&#x27;)<br/>&gt;       equal_to_canonical(implementation, command, args)<br/><br/>tests/test_basic_compatibility.py:47: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>implementation = &#x27;rust-macaroons&#x27;, command = &#x27;first_party_caveat_signature&#x27;, args = (&#x27;loc&#x27;, &#x27;key&#x27;, &#x27;id&#x27;, &#x27;first_party&#x27;)<br/>canonical = b&#x27;93e086c6a98c4723dabf3e52b106aaeb988daf4d72780fba2987fdcb0289ffd0\n&#x27;<br/><br/>    def equal_to_canonical(implementation, command, args, canonical=None):<br/>        canonical = canonical or execute_command(&#x27;libmacaroons&#x27;, command, args)<br/>        result = execute_command(implementation, command, args)<br/>&gt;       assert(result == canonical)<br/><span class="error">E       assert b&#x27;be9ae46bcfb...a1e9180171b\n&#x27; == b&#x27;93e086c6a98c...dcb0289ffd0\n&#x27;</span><br/><span class="error">E         At index 0 diff: 98 != 57</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - b&#x27;be9ae46bcfba7353d9dd29afd9686c11b8539a71cffa25b2a1af5a1e9180171b\n&#x27;</span><br/><span class="error">E         + b&#x27;93e086c6a98c4723dabf3e52b106aaeb988daf4d72780fba2987fdcb0289ffd0\n&#x27;</span><br/><br/>tests/test_basic_compatibility.py:33: AssertionError<br/></div></td></tr></tbody></table></body></html>

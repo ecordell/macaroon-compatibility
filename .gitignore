@@ -17,3 +17,7 @@
 /implementations/go-macaroon/src/
 
 /implementations/go-macaroon/pkg/
+
+/implementations/rust-macaroons/first_party_caveat_signature
+
+/implementations/rust-macaroons/basic_macaroon_signature
