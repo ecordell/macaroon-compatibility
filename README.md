@@ -25,6 +25,8 @@ Compatibility Results:
      + Failing
          * rust-macaroons - Outputs the same signature as the basic signature (possibly the test implemenation is bad?)
 
+You can also view the [raw test report](https://rawgit.com/ecordell/macaroon-compatibility/master/report.html) (may take some time to grok).
+
 # Details
 
 Each implementation has its own folder containing executable files - one per test. Each test file accepts arguments and should write the result to stdout. The test runner pipes the same arguments to each test in each implementation and compares the results.
