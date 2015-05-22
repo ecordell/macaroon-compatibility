@@ -106,7 +106,3 @@ RUN mkdir /usr/rust && cd /usr/rust && \
 
 # Add source
 ADD . /usr/src
-
-# link macaroons-js for node
-RUN cd implementations/macaroons-js && npm link macaroons.js
-
