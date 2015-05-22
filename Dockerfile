@@ -48,14 +48,23 @@ RUN wget -q "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64
 # Install Go
 RUN apt-get update && \
     apt-get install -y golang bzr && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    mkdir /usr/go
 ENV GOROOT /usr/lib/go
-ENV GOPATH /usr/src/go-macaroon
+ENV GOPATH /usr/go
 
 # Install PHP
 RUN apt-get update && \
     apt-get install -y php5 php5-dev php-pear && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install Rust
+ENV RUST_VERSION=1.0.0
+RUN apt-get update && \
+    curl -sO https://static.rust-lang.org/dist/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.gz && \
+    tar -xvzf rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.gz && \
+    ./rust-$RUST_VERSION-x86_64-unknown-linux-gnu/install.sh && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* rust-$RUST_VERSION-x86_64-unknown-linux-gnu{,.tar.gz}
 
 # Install libmacaroons
 RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
@@ -66,9 +75,6 @@ RUN wget -O - http://ubuntu.hyperdex.org/hyperdex.gpg.key | apt-key add - && \
 
 WORKDIR /usr/src
 
-# Add source
-ADD . /usr/src
-
 # Install pymacaroons
 RUN pip3 install pymacaroons pytest
 
@@ -76,7 +82,7 @@ RUN pip3 install pymacaroons pytest
 RUN gem install macaroons
 
 # Install macaroons.js
-RUN npm install macaroons.js
+RUN npm install -g macaroons.js
 
 # Install go-macaroons
 RUN go get launchpad.net/gorun && \
@@ -84,9 +90,23 @@ RUN go get launchpad.net/gorun && \
     go get gopkg.in/macaroon-bakery.v1/bakery
 
 # Install php-macaroons
+ADD implementations/php-macaroons /usr/src/implementations/php-macaroons
 RUN pecl install libsodium-0.1.3 && \
     echo "extension=libsodium.so" >> /etc/php5/cli/php.ini && \
     curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/bin/composer && \
-    cd php-macaroons && \
+    cd implementations/php-macaroons && \
     composer install
+
+# Install rust-macaroons
+RUN mkdir /usr/rust && cd /usr/rust && \
+    git clone https://github.com/cryptosphere/rust-macaroons.git /usr/rust/rust-macaroons && \
+    cd rust-macaroons && \
+    cargo build
+
+# Add source
+ADD . /usr/src
+
+# link macaroons-js for node
+RUN cd implementations/macaroons-js && npm link macaroons.js
+

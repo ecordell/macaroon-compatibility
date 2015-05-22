@@ -1,6 +1,6 @@
 test:
   build: .
-  command: py.test -vv
+  command: ./bin/test
   working_dir: /usr/src
   volumes:
     - .:/usr/src

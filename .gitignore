@@ -9,3 +9,11 @@
 /go-macaroon/pkg/
 
 /php-macaroons/vendor/
+
+/implementations/php-macaroons/vendor/
+
+/tests/__pycache__/
+
+/implementations/go-macaroon/src/
+
+/implementations/go-macaroon/pkg/

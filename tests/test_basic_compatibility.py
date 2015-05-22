@@ -12,15 +12,24 @@ implementations = [
     'macaroons-js',
     'go-macaroon',
     'php-macaroons',
+    'rust-macaroons',
 ]
 
-BasicMacaroonArgs = collections.namedtuple('BasicMacaroonArgs', 'location key id')
+BasicMacaroonArgs = collections.namedtuple(
+    'BasicMacaroonArgs', 'location key id'
+)
 
 
 @functools.lru_cache(typed=True)
 def execute_command(implementation, command, args):
-    path = os.path.join(implementation, command)
-    return subprocess.check_output([path] + list(args)) if os.path.isfile(path) else None
+    path = os.path.join('implementations', implementation, command)
+    if os.path.isfile(path):
+        return subprocess.check_output([path] + list(args))
+    else:
+        pytest.skip(
+            "Test not implemented for {impl}".format(impl=implementation)
+        )
+        return None
 
 
 @pytest.mark.parametrize("implementation", implementations)

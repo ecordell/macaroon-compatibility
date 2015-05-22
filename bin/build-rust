@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /usr/src/rust-macaroons && \
+rustc -L /usr/rust/rust-macaroons/target/debug -L /usr/rust/rust-macaroons/target/debug/deps ./*.rs
