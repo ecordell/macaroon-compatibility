@@ -18,6 +18,9 @@ implementations = [
 BasicMacaroonArgs = collections.namedtuple(
     'BasicMacaroonArgs', 'location key id'
 )
+BasicFirstPartyArgs = collections.namedtuple(
+    'BasicFirstPartyArgs', 'location key id caveat'
+)
 
 
 @functools.lru_cache(typed=True)
@@ -36,6 +39,15 @@ def execute_command(implementation, command, args):
 def test_basic_signature_equality(implementation):
     command = 'basic_macaroon_signature'
     args = BasicMacaroonArgs(location='loc', key='key', id='id')
+    canonical = execute_command('libmacaroons', command, args)
+    result = execute_command(implementation, command, args)
+    assert(result == canonical)
+
+
+@pytest.mark.parametrize("implementation", implementations)
+def test_first_party_caveat_signature(implementation):
+    command = 'first_party_caveat_signature'
+    args = BasicFirstPartyArgs(location='loc', key='key', id='id', caveat='first_party')
     canonical = execute_command('libmacaroons', command, args)
     result = execute_command(implementation, command, args)
     assert(result == canonical)

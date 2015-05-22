@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# script arguments: location key id caveat_id
+
+require 'macaroons'
+
+location = ARGV[0]
+key = ARGV[1]
+identifier = ARGV[2]
+caveat_id = ARGV[3]
+
+m = Macaroon.new(key: key, identifier: identifier, location: location)
+m.add_first_party_caveat(caveat_id)
+
+puts m.signature

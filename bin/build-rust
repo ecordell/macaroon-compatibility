@@ -1,4 +1,7 @@
 #!/bin/bash
 
-cd /usr/src/rust-macaroons && \
-rustc -L /usr/rust/rust-macaroons/target/debug -L /usr/rust/rust-macaroons/target/debug/deps ./*.rs
+cd /usr/src/implementations/rust-macaroons
+
+for filename in ./*.rs; do
+  rustc -L /usr/rust/rust-macaroons/target/debug -L /usr/rust/rust-macaroons/target/debug/deps "$filename"
+done

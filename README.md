@@ -21,6 +21,9 @@ Compatibility Results:
  - **Basic Signatures Matching** *Given a location, key, and identifier, all libraries should output the same signature for a macaroon.*
      + Failing
          * None
+ - **First Party Caveat Signatures Matching** *Given a location, key, identifier, and one predicate, all libraries should output the same signature for a macaroon with a single first party caveat.*
+     + Failing
+         * rust-macaroons - Outputs the same signature as the basic signature (possibly the test implemenation is bad?)
 
 # Details
 

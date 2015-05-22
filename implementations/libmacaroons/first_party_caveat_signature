@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+# script arguments: location key id caveat_id
+
+import sys
+
+import macaroons
+
+
+def main(argv):
+    location = argv[0]
+    key = argv[1]
+    id = argv[2]
+    caveat_id = argv[3]
+
+    m = macaroons.create(location, key, id)
+    m = m.add_first_party_caveat(caveat_id)
+    print m.signature
+    exit(0)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
