@@ -344,9 +344,9 @@ function one_row_for_data() {
     });
 }
 </script>
-    <p>Report generated on 22-May-2015 at 17:52:56</p>
+    <p>Report generated on 23-May-2015 at 01:37:00</p>
     <h2>Summary</h2>
-    <p>14 tests ran in 2.00 seconds.<br/><span class="passed">13 passed</span>, <span class="skipped">0 skipped</span>, <span class="failed">1 failed</span>, <span class="error">0 errors</span>.<br/><span class="skipped">0 expected failures</span>, <span class="failed">0 unexpected passes</span>.</p>
+    <p>14 tests ran in 1.82 seconds.<br/><span class="passed">13 passed</span>, <span class="skipped">0 skipped</span>, <span class="failed">1 failed</span>, <span class="error">0 errors</span>.<br/><span class="skipped">0 expected failures</span>, <span class="failed">0 unexpected passes</span>.</p>
     <h2>Results</h2>
     <table id="results-table">
       <thead id="results-table-head">
@@ -377,13 +377,13 @@ function one_row_for_data() {
         <tr class="passed results-table-row">
           <td class="col-result">Passed</td>
           <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[macaroons-js]</td>
-          <td class="col-duration">0.13</td>
+          <td class="col-duration">0.15</td>
           <td class="col-links"></td>
           <td class="extra"></td></tr>
         <tr class="passed results-table-row">
           <td class="col-result">Passed</td>
           <td class="col-name">tests/test_basic_compatibility.py::test_basic_signature_equality[go-macaroon]</td>
-          <td class="col-duration">0.37</td>
+          <td class="col-duration">0.38</td>
           <td class="col-links"></td>
           <td class="extra"></td></tr>
         <tr class="passed results-table-row">
@@ -407,7 +407,7 @@ function one_row_for_data() {
         <tr class="passed results-table-row">
           <td class="col-result">Passed</td>
           <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[pymacaroons]</td>
-          <td class="col-duration">0.05</td>
+          <td class="col-duration">0.06</td>
           <td class="col-links"></td>
           <td class="extra"></td></tr>
         <tr class="passed results-table-row">
@@ -425,7 +425,7 @@ function one_row_for_data() {
         <tr class="passed results-table-row">
           <td class="col-result">Passed</td>
           <td class="col-name">tests/test_basic_compatibility.py::test_first_party_caveat_signature[go-macaroon]</td>
-          <td class="col-duration">0.35</td>
+          <td class="col-duration">0.39</td>
           <td class="col-links"></td>
           <td class="extra"></td></tr>
         <tr class="passed results-table-row">
@@ -440,4 +440,4 @@ function one_row_for_data() {
           <td class="col-duration">0.02</td>
           <td class="col-links"></td>
           <td class="extra">
-            <div class="log">implementation = &#x27;rust-macaroons&#x27;<br/><br/>    @pytest.mark.parametrize(&quot;implementation&quot;, implementations)<br/>    def test_first_party_caveat_signature(implementation):<br/>        command = &#x27;first_party_caveat_signature&#x27;<br/>        args = (&#x27;loc&#x27;, &#x27;key&#x27;, &#x27;id&#x27;, &#x27;first_party&#x27;)<br/>&gt;       equal_to_canonical(implementation, command, args)<br/><br/>tests/test_basic_compatibility.py:47: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>implementation = &#x27;rust-macaroons&#x27;, command = &#x27;first_party_caveat_signature&#x27;, args = (&#x27;loc&#x27;, &#x27;key&#x27;, &#x27;id&#x27;, &#x27;first_party&#x27;)<br/>canonical = b&#x27;93e086c6a98c4723dabf3e52b106aaeb988daf4d72780fba2987fdcb0289ffd0\n&#x27;<br/><br/>    def equal_to_canonical(implementation, command, args, canonical=None):<br/>        canonical = canonical or execute_command(&#x27;libmacaroons&#x27;, command, args)<br/>        result = execute_command(implementation, command, args)<br/>&gt;       assert(result == canonical)<br/><span class="error">E       assert b&#x27;be9ae46bcfb...a1e9180171b\n&#x27; == b&#x27;93e086c6a98c...dcb0289ffd0\n&#x27;</span><br/><span class="error">E         At index 0 diff: 98 != 57</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - b&#x27;be9ae46bcfba7353d9dd29afd9686c11b8539a71cffa25b2a1af5a1e9180171b\n&#x27;</span><br/><span class="error">E         + b&#x27;93e086c6a98c4723dabf3e52b106aaeb988daf4d72780fba2987fdcb0289ffd0\n&#x27;</span><br/><br/>tests/test_basic_compatibility.py:33: AssertionError<br/></div></td></tr></tbody></table></body></html>
+            <div class="log">implementation = &#x27;rust-macaroons&#x27;<br/><br/>    @pytest.mark.parametrize(&quot;implementation&quot;, implementations)<br/>    def test_first_party_caveat_signature(implementation):<br/>        command = &#x27;first_party_caveat_signature&#x27;<br/>        args = (&#x27;loc&#x27;, &#x27;key&#x27;, &#x27;id&#x27;, &#x27;first_party&#x27;)<br/>&gt;       equal_to_canonical(implementation, command, args)<br/><br/>tests/test_basic_compatibility.py:47: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>implementation = &#x27;rust-macaroons&#x27;, command = &#x27;first_party_caveat_signature&#x27;, args = (&#x27;loc&#x27;, &#x27;key&#x27;, &#x27;id&#x27;, &#x27;first_party&#x27;)<br/>canonical = b&#x27;93e086c6a98c4723dabf3e52b106aaeb988daf4d72780fba2987fdcb0289ffd0\n&#x27;<br/><br/>    def equal_to_canonical(implementation, command, args, canonical=None):<br/>        canonical = canonical or execute_command(&#x27;libmacaroons&#x27;, command, args)<br/>        result = execute_command(implementation, command, args)<br/>&gt;       assert(result == canonical)<br/><span class="error">E       assert b&#x27;93e086c6a98...fdcb289ffd0\n&#x27; == b&#x27;93e086c6a98c...dcb0289ffd0\n&#x27;</span><br/><span class="error">E         At index 26 diff: 54 != 48</span><br/><span class="error">E         Right contains more items, first extra item: 100</span><br/><span class="error">E         Full diff:</span><br/><span class="error">E         - b&#x27;93e086c6a98c4723dabf3e52b16aaeb988daf4d7278fba2987fdcb289ffd0\n&#x27;</span><br/><span class="error">E         + b&#x27;93e086c6a98c4723dabf3e52b106aaeb988daf4d72780fba2987fdcb0289ffd0\n&#x27;</span><br/><span class="error">E         ?                             +                 +           +</span><br/><br/>tests/test_basic_compatibility.py:33: AssertionError<br/></div></td></tr></tbody></table></body></html>
