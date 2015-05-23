@@ -36,11 +36,13 @@ RUN cd /tmp && \
   cd ..
 
 # Install Node
+ENV NODE_PREFIX /usr/local
+ENV NODE_PATH $NODE_PREFIX/lib/node_modules
 ENV NODE_VERSION 0.11.14
 ENV NPM_VERSION 2.1.6
 
 RUN wget -q "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
-  && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
+  && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C $NODE_PREFIX --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.gz" \
   && npm install -g npm@"$NPM_VERSION" \
   && npm cache clear
