@@ -23,7 +23,7 @@ Compatibility Results:
          * None
  - **First Party Caveat Signatures Matching** *Given a location, key, identifier, and one predicate, all libraries should output the same signature for a macaroon with a single first party caveat.*
      + Failing
-         * rust-macaroons - Outputs the same signature as the basic signature (possibly the test implemenation is bad?)
+         * None
 
 You can also view the [raw test report](https://rawgit.com/ecordell/macaroon-compatibility/master/report.html) (may take some time to grok).
 

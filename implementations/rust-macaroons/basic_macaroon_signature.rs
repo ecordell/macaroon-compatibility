@@ -9,7 +9,7 @@ use macaroons::token::{Token, Tag};
 
 fn to_hex_string(bytes: Vec<u8>) -> String {
   let strs: Vec<String> = bytes.iter()
-                               .map(|b| format!("{:x}", b))
+                               .map(|b| format!("{:01$x}", b, 2))
                                .collect();
   strs.connect("")
 }
