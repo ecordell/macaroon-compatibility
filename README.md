@@ -19,9 +19,15 @@ Tested Implementations:
 Compatibility Results:
 
  - **Basic Signatures Matching** *Given a location, key, and identifier, all libraries should output the same signature for a macaroon.*
+    + Failing
+        * None
+ - **First Party Caveat Signatures Matching** *Given a location, key, identifier, and one predicate, all libraries should output the same signature for a macaroon with a single first party caveat.*
+    + Failing
+        * None
+ - **Basic Binary Serialization** *Given a simple macaroon with a location, key, and id, all libraries should output the same serialized form.*
      + Failing
          * None
- - **First Party Caveat Signatures Matching** *Given a location, key, identifier, and one predicate, all libraries should output the same signature for a macaroon with a single first party caveat.*
+ - **Deserialization of Serialized Macaroon (Signature)** *A macaroon serialized with one library should be deserialized without error by all other macaroon libraries, and the signature should be unchanged*
      + Failing
          * None
 

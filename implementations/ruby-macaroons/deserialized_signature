@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+# script arguments: serialized
+
+require 'macaroons'
+
+serialized = ARGV[0]
+
+m = Macaroon.from_binary(serialized)
+
+puts m.signature

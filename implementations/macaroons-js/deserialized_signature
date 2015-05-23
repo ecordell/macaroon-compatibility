@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+// script arguments: serialized
+
+var MacaroonsBuilder = require('macaroons.js').MacaroonsBuilder;
+
+var serialized = process.argv[2];
+
+var macaroon = MacaroonsBuilder.deserialize(serialized);
+
+console.log(macaroon.signature);

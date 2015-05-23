@@ -23,3 +23,5 @@
 /implementations/rust-macaroons/basic_macaroon_signature
 
 /implementations/rust-macaroons/basic_macaroon_serialized
+
+/implementations/rust-macaroons/deserialized_signature

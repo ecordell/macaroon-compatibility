@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+// script arguments: serialized
+
+require 'vendor/autoload.php';
+use Macaroons\Macaroon;
+
+$serialized = $argv[1];
+
+$m = Macaroon::deserialize($serialized);
+
+echo $m->getSignature() . "\n"
+
+?>
