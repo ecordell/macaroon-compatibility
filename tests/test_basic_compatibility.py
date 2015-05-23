@@ -45,3 +45,10 @@ def test_first_party_caveat_signature(implementation):
     command = 'first_party_caveat_signature'
     args = ('loc', 'key', 'id', 'first_party')
     equal_to_canonical(implementation, command, args)
+
+
+@pytest.mark.parametrize("implementation", implementations)
+def test_basic_serialization_equality(implementation):
+    command = 'basic_macaroon_serialized'
+    args = ('loc', 'key', 'id')
+    equal_to_canonical(implementation, command, args)

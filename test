@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Rust currently has no convenient way to run directly
-./bin/build-rust
-
-py.test -vv
