@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+# script arguments: location key id
+#                   first_party_caveat
+#                   third_party_location third_party_key third_party_id
+#                   discharge_macaroon
+# script output: macaroon bound_discharge
+
+import sys
+
+from pymacaroons import Macaroon
+
+
+def main(argv):
+    location = argv[0]
+    key = argv[1]
+    id = argv[2]
+    first_party_caveat = argv[3]
+    third_party_location = argv[4]
+    third_party_key = argv[5]
+    third_party_id = argv[6]
+    discharge_macaroon = argv[7]
+
+    m = Macaroon(location=location, key=key, identifier=id)
+    m.add_first_party_caveat(first_party_caveat)
+    m.add_third_party_caveat(third_party_location, third_party_key, third_party_id)
+    print(m.serialize())
+    print(m.prepare_for_request(Macaroon.deserialize(discharge_macaroon)).serialize())
+    exit(0)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

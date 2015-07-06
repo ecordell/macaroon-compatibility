@@ -80,7 +80,10 @@ def test_basic_deserialization_interoperability(source_impl, dest_impl):
     source_command = 'basic_macaroon_serialized'
     source_args = ('loc', 'key', 'id')
     dest_command = 'deserialized_signature'
-    are_interoperable(source_impl, source_command, source_args, dest_impl, dest_command)
+    are_interoperable(
+        source_impl, source_command, source_args,
+        dest_impl, dest_command
+    )
 
 
 @pytest.mark.parametrize("source_impl,dest_impl", impl_permutations())
@@ -88,4 +91,48 @@ def test_basic_first_party_caveat_verification(source_impl, dest_impl):
     source_command = 'first_party_macaroon_serialized'
     source_args = ('loc', 'key', 'id', 'first_party')
     dest_command = 'verify_first_party_macaroon'
-    are_interoperable(source_impl, source_command, source_args, dest_impl, dest_command)
+    are_interoperable(
+        source_impl, source_command, source_args,
+        dest_impl, dest_command
+    )
+
+
+@pytest.mark.parametrize("discharge_impl,macaroon_impl,verify_impl",
+                         itertools.combinations_with_replacement(implementations, 3))
+def test_third_party_caveat_verification(discharge_impl,
+                                         macaroon_impl,
+                                         verify_impl):
+    discharge_location = 'discharge_loc'
+    discharge_key = 'discharge_key'
+    discharge_id = 'discharge_id'
+    discharge_first_party = 'discharge_first_party'
+    first_party = 'first_party'
+    key = 'key'
+
+    discharge_command = 'first_party_macaroon_serialized'
+    discharge_args = (
+        discharge_location, discharge_key, discharge_id, discharge_first_party
+    )
+    discharge_macaroon, _, _, _ = execute_command(
+        discharge_impl, discharge_command, discharge_args
+    ).decode('ascii').split('\n')
+
+    macaroon_command = 'third_party_macaroon_serialized'
+    macaroon_args = (
+        'loc', key, 'id', first_party,
+        discharge_location, discharge_key, discharge_id, discharge_macaroon
+    )
+    serialized_macaroon, bound_discharge, _ = execute_command(
+        macaroon_impl, macaroon_command, macaroon_args
+    ).decode('ascii').split('\n')
+
+    verify_command = 'verify_third_party_macaroon'
+    verify_args = (
+        serialized_macaroon, bound_discharge, key,
+        first_party, discharge_first_party
+    )
+    verified, _ = execute_command(
+        verify_impl, verify_command, verify_args
+    ).decode('ascii').split('\n')
+
+    assert(verified == "True")

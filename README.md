@@ -30,6 +30,14 @@ Compatibility Results:
      + ✘ Failing
          * rust-macaroons (Verification unimplemented)
  - **Verifying a Macaroon with a Third Party Caveat** *A macaroon with a third party caveat serialized with one library (along with a discharge macaroon) should be deserialized and verified by all other macaroon libraries.*
+     + ✔ Passing
+         * libmacaroons
+         * pymacaroons
+     + - Skipped (tests not yet implemented)
+         * go-macaroons
+         * macaroons-js
+         * php-macaroons
+         * ruby-macaroons
      + ✘ Failing
          * rust-macaroons (Third Party Caveats and Verification unimplemented)
 
