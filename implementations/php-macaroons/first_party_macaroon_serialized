@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+// script arguments: location key id caveat_id
+
+require 'vendor/autoload.php';
+use Macaroons\Macaroon;
+
+$location = $argv[1];
+$key = $argv[2];
+$id = $argv[3];
+$caveat_id = $argv[4];
+
+$m = new Macaroon($key, $id, $location);
+$m->addFirstPartyCaveat($caveat_id);
+
+echo $m->serialize() . "\n";
+echo $key . "\n";
+echo $caveat_id . "\n";
+
+?>

@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+// script arguments: serialized key caveat
+
+require 'vendor/autoload.php';
+use Macaroons\Macaroon;
+use Macaroons\Verifier;
+
+$serialized = $argv[1];
+$key = $argv[2];
+$caveat = $argv[3];
+
+$m = Macaroon::deserialize($serialized);
+$verifier = new Verifier();
+$verifier->satisfyExact($caveat);
+$verified = $verifier->verify($m, $key);
+
+echo ($verified ? "True" : "False") . "\n";
+
+?>

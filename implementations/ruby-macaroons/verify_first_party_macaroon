@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# script arguments: serialized key caveat
+
+require 'macaroons'
+
+serialized = ARGV[0]
+key = ARGV[1]
+caveat = ARGV[2]
+
+m = Macaroon.from_binary(serialized)
+v = Macaroon::Verifier.new()
+v.satisfy_exact(caveat)
+verified = v.verify(macaroon: m, key: key)
+
+puts verified ? "True" : "False"

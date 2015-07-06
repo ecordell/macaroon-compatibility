@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+# script arguments: serialized key first_party_caveat
+
+import sys
+
+from pymacaroons import Macaroon, Verifier
+
+
+def main(argv):
+    serialized = argv[0]
+    key = argv[1]
+    first_party_caveat = argv[2]
+
+    m = Macaroon.deserialize(serialized)
+    v = Verifier()
+    v.satisfy_exact(first_party_caveat)
+    try:
+        print(v.verify(m, key))
+    except Exception as e:
+        print("False")
+    exit(0)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

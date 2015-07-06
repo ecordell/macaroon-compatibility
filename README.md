@@ -30,6 +30,9 @@ Compatibility Results:
  - **Deserialization of Serialized Macaroon (Signature)** *A macaroon serialized with one library should be deserialized without error by all other macaroon libraries, and the signature should be unchanged*
      + Failing
          * None
+ - **Verifying a Macaroon with a First Party Caveat** *A macaroon with a first party caveat serialized with one library should be deserialized and verified by all other macaroon libraries.*
+     + Failing
+         * rust-macaroons (Verification unimplemented)
 
 You can also view the [raw test report](https://rawgit.com/ecordell/macaroon-compatibility/master/report.html) (may take some time to grok).
 

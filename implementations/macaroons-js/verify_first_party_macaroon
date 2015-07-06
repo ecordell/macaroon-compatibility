@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+// script arguments: serialized key caveat
+
+var MacaroonsBuilder = require('macaroons.js').MacaroonsBuilder;
+var MacaroonsVerifier = require('macaroons.js').MacaroonsVerifier;
+
+var serialized = process.argv[2];
+var key = process.argv[3];
+var caveat = process.argv[4];
+
+var macaroon = MacaroonsBuilder.deserialize(serialized);
+
+var verifier = new MacaroonsVerifier(macaroon);
+verifier.satisfyExact(caveat)
+verified = verifier.isValid(key);
+
+console.log(verified ? "True" : "False");

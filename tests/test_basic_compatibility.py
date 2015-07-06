@@ -15,7 +15,9 @@ implementations = [
     'rust-macaroons',
 ]
 
-impl_permutations = itertools.permutations(implementations, 2)
+
+def impl_permutations():
+    return itertools.permutations(implementations, 2)
 
 
 @functools.lru_cache(typed=True)
@@ -73,9 +75,17 @@ def test_basic_serialization_equality(implementation):
     equal_to_canonical(implementation, command, args)
 
 
-@pytest.mark.parametrize("source_impl,dest_impl", impl_permutations)
+@pytest.mark.parametrize("source_impl,dest_impl", impl_permutations())
 def test_basic_deserialization_interoperability(source_impl, dest_impl):
     source_command = 'basic_macaroon_serialized'
     source_args = ('loc', 'key', 'id')
     dest_command = 'deserialized_signature'
+    are_interoperable(source_impl, source_command, source_args, dest_impl, dest_command)
+
+
+@pytest.mark.parametrize("source_impl,dest_impl", impl_permutations())
+def test_basic_first_party_caveat_verification(source_impl, dest_impl):
+    source_command = 'first_party_macaroon_serialized'
+    source_args = ('loc', 'key', 'id', 'first_party')
+    dest_command = 'verify_first_party_macaroon'
     are_interoperable(source_impl, source_command, source_args, dest_impl, dest_command)
