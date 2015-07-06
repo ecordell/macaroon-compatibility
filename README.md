@@ -29,7 +29,7 @@ Compatibility Results:
  - **Verifying a Macaroon with a First Party Caveat** *A macaroon with a first party caveat serialized with one library should be deserialized and verified by all other macaroon libraries.*
      + ✘ Failing
          * rust-macaroons (Verification unimplemented)
- - **Verifying a Macaroon with a Third Party Caveat** *A macaroon with a third party caveat serialized with one library (along with a discharge macaroon) should be deserialized and verified by all other macaroon libraries.*
+ - **Verifying a Macaroon with a Third Party Caveat** *A macaroon with a third party caveat created with one library and a discharge macaroon issued by another library, should be deserialized and verified by all other macaroon libraries.*
      + ✔ Passing
          * libmacaroons
          * pymacaroons
