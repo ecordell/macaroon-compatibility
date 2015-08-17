@@ -33,11 +33,11 @@ Compatibility Results:
      + ✔ Passing
          * libmacaroons
          * pymacaroons
+         * ruby-macaroons
      + - Skipped (tests not yet implemented)
          * go-macaroons
          * macaroons-js
          * php-macaroons
-         * ruby-macaroons
      + ✘ Failing
          * rust-macaroons (Third Party Caveats and Verification unimplemented)
 

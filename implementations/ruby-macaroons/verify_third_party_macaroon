@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+# script arguments: serialized_macaroon discharge_macaroon key
+#                   first_party_caveat discharge_first_party
+
+require 'macaroons'
+
+serialized_macaroon = ARGV[0]
+discharge_macaroon = ARGV[1]
+key = ARGV[2]
+first_party_caveat = ARGV[3]
+discharge_first_party = ARGV[4]
+
+m = Macaroon.from_binary(serialized_macaroon)
+d = Macaroon.from_binary(discharge_macaroon)
+v = Macaroon::Verifier.new
+v.satisfy_exact(first_party_caveat)
+v.satisfy_exact(discharge_first_party)
+begin
+  verified = v.verify(macaroon: m, key: key, discharge_macaroons: [d])
+  puts verified ? 'True' : 'False'
+rescue => error
+  puts error
+end

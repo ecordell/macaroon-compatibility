@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+# script arguments: location key id
+#                   first_party_caveat
+#                   third_party_location third_party_key third_party_id
+#                   discharge_macaroon
+# script output: macaroon bound_discharge
+require 'macaroons'
+
+location = ARGV[0]
+key = ARGV[1]
+id = ARGV[2]
+first_party_caveat = ARGV[3]
+third_party_location = ARGV[4]
+third_party_key = ARGV[5]
+third_party_id = ARGV[6]
+discharge_macaroon = ARGV[7]
+
+m = Macaroon.new(key: key, identifier: id, location: location)
+m.add_first_party_caveat(first_party_caveat)
+m.add_third_party_caveat(third_party_key, third_party_id, third_party_location)
+
+puts m.serialize()
+puts m.prepare_for_request(Macaroon.from_binary(discharge_macaroon)).serialize()

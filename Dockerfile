@@ -5,7 +5,8 @@ MAINTAINER Evan Cordell <cordell.evan@gmail.com>
 RUN apt-get clean all && apt-get update && apt-get upgrade -y
 
 # Build Tools
-RUN apt-get install -y build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev && \
+RUN apt-get update && \
+    apt-get install -y build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev pkg-config && \
     apt-get install -y make wget tar git curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -81,7 +82,7 @@ WORKDIR /usr/src
 RUN pip3 install pymacaroons pytest pytest-html
 
 # Install ruby-macaroons
-RUN gem install macaroons
+RUN gem install macaroons -v 0.6.1
 
 # Install macaroons.js
 RUN npm install -g macaroons.js
