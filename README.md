@@ -27,8 +27,7 @@ Compatibility Results:
  - **Deserialization of Serialized Macaroon (Signature)** *A macaroon serialized with one library should be deserialized without error by all other macaroon libraries, and the signature should be unchanged*
      + ✔ All Passing
  - **Verifying a Macaroon with a First Party Caveat** *A macaroon with a first party caveat serialized with one library should be deserialized and verified by all other macaroon libraries.*
-     + ✘ Failing
-         * rust-macaroons (Verification unimplemented)
+     + ✔ All Passing
  - **Verifying a Macaroon with a Third Party Caveat** *A macaroon with a third party caveat created with one library and a discharge macaroon issued by another library, should be deserialized and verified by all other macaroon libraries.*
      + ✔ Passing
          * libmacaroons

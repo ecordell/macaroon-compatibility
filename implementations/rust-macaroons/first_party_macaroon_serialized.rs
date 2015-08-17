@@ -16,7 +16,7 @@ fn main() {
   let id = args[3].clone().into_bytes();
   let caveat_id = args[4].clone().into_bytes();
 
-  let mut token = Token::new(key, id, location);
+  let mut token = Token::new(&key, id, location);
   token = token.add_caveat(Caveat::new(Predicate(caveat_id)));
   let serialized = String::from_utf8(token.serialize()).unwrap();
 

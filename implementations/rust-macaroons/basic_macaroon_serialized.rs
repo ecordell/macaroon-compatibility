@@ -13,7 +13,7 @@ fn main() {
   let key = args[2].clone().into_bytes();
   let id = args[3].clone().into_bytes();
 
-  let token = Token::new(key, id, location);
+  let token = Token::new(&key, id, location);
   let serialized = String::from_utf8(token.serialize()).unwrap();
 
   println!("{}", &serialized);

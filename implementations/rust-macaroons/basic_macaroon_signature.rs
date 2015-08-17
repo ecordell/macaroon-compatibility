@@ -21,7 +21,7 @@ fn main() {
   let id = args[3].clone().into_bytes();
 
 
-  let token = Token::new(key, id, location);
+  let token = Token::new(&key, id, location);
   let Tag(sig) = token.tag;
 
   let signature = to_hex_string(sig.to_vec());
