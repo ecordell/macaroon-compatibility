@@ -39,7 +39,7 @@ Compatibility Results:
      + ✘ Failing
          * rust-macaroons (Third Party Caveats/Verification unimplemented)
 
-You can also view the [raw test report](https://rawgit.com/ecordell/macaroon-compatibility/master/report.html) (may take some time to grok).
+You can also view the [raw test report](https://cdn.rawgit.com/ecordell/macaroon-compatibility/master/report.html) (may take some time to grok).
 
 # Details
 
