@@ -35,7 +35,7 @@ Compatibility Results:
          * ruby-macaroons
          * macaroons-js
          * php-macaroons
-        * go-macaroons
+         * go-macaroons
      + ✘ Failing
          * rust-macaroons (Third Party Caveats/Verification unimplemented)
 
