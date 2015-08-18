@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+// script arguments: serialized_macaroon discharge_macaroon key
+//                   first_party_caveat discharge_first_party
+
+require 'vendor/autoload.php';
+use Macaroons\Macaroon;
+use Macaroons\Verifier;
+
+$serialized_macaroon = $argv[1];
+$discharge_macaroon = $argv[2];
+$key = $argv[3];
+$first_party_caveat = $argv[4];
+$discharge_first_party = $argv[5];
+
+$m = Macaroon::deserialize($serialized_macaroon);
+$discharge = Macaroon::deserialize($discharge_macaroon);
+
+$verifier = new Verifier();
+$verifier->satisfyExact($first_party_caveat);
+$verifier->satisfyExact($discharge_first_party);
+$verified = $verifier->verify($m, $key, array($discharge));
+
+echo ($verified ? "True" : "False") . "\n";
+
+?>

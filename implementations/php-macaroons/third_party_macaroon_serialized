@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+// script arguments: location key id
+//                   first_party_caveat
+//                   third_party_location third_party_key third_party_id
+//                   discharge_macaroon
+// script output: macaroon bound_discharge
+
+require 'vendor/autoload.php';
+use Macaroons\Macaroon;
+
+$location = $argv[1];
+$key = $argv[2];
+$id = $argv[3];
+$first_party_caveat = $argv[4];
+$third_party_location = $argv[5];
+$third_party_key = $argv[6];
+$third_party_id = $argv[7];
+$discharge_macaroon = $argv[8];
+
+$discharge = Macaroon::deserialize($discharge_macaroon);
+
+$m = new Macaroon($key, $id, $location);
+$m->addFirstPartyCaveat($first_party_caveat);
+$m->addThirdPartyCaveat($third_party_key, $third_party_id, $third_party_location);
+
+$bound_discharge = $m->prepareForRequest($discharge);
+
+echo $m->serialize() . "\n";
+echo $bound_discharge->serialize() . "\n";
+
+?>
