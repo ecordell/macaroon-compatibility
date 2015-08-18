@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+// script arguments: serialized_macaroon discharge_macaroon key
+//                   first_party_caveat discharge_first_party
+
+var MacaroonsBuilder = require('macaroons.js').MacaroonsBuilder;
+var MacaroonsVerifier = require('macaroons.js').MacaroonsVerifier;
+
+var serialized_macaroon = process.argv[2];
+var discharge_macaroon = process.argv[3];
+var key = process.argv[4];
+var first_party_caveat = process.argv[5];
+var discharge_first_party = process.argv[6];
+
+var macaroon = MacaroonsBuilder.deserialize(serialized_macaroon);
+var bound_discharge = MacaroonsBuilder.deserialize(discharge_macaroon);
+
+var verifier = new MacaroonsVerifier(macaroon);
+verifier.satisfyExact(first_party_caveat);
+verifier.satisfyExact(discharge_first_party);
+verifier.satisfy3rdParty(bound_discharge);
+verified = verifier.isValid(key);
+
+console.log(verified ? "True" : "False");

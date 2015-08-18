@@ -25,3 +25,7 @@
 /implementations/rust-macaroons/basic_macaroon_serialized
 
 /implementations/rust-macaroons/deserialized_signature
+
+/implementations/rust-macaroons/verify_first_party_macaroon
+
+/implementations/rust-macaroons/first_party_macaroon_serialized

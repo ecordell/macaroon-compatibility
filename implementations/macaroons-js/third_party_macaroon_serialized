@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+// script arguments: location key id
+//                   first_party_caveat
+//                   third_party_location third_party_key third_party_id
+//                   discharge_macaroon
+// script output: macaroon bound_discharge
+
+var MacaroonsBuilder = require('macaroons.js').MacaroonsBuilder;
+
+var location = process.argv[2];
+var key = process.argv[3];
+var identifier = process.argv[4];
+var first_party = process.argv[5];
+var third_party_location = process.argv[6];
+var third_party_key = process.argv[7];
+var third_party_id = process.argv[8];
+var discharge_macaroon = process.argv[9];
+
+var macaroon = new MacaroonsBuilder(location, key, identifier)
+    .add_first_party_caveat(first_party)
+    .add_third_party_caveat(third_party_location, third_party_key, third_party_id)
+    .getMacaroon();
+
+var discharge =  MacaroonsBuilder.deserialize(discharge_macaroon);
+var bound = MacaroonsBuilder.modify(macaroon)
+    .prepare_for_request(discharge)
+    .getMacaroon();
+
+console.log(macaroon.serialize());
+console.log(bound.serialize());
