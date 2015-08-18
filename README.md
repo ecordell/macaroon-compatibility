@@ -35,10 +35,9 @@ Compatibility Results:
          * ruby-macaroons
          * macaroons-js
          * php-macaroons
-     + - Skipped (tests not yet implemented)
-         * go-macaroons
+        * go-macaroons
      + ✘ Failing
-         * rust-macaroons (Third Party Caveats and Verification unimplemented)
+         * rust-macaroons (Third Party Caveats/Verification unimplemented)
 
 You can also view the [raw test report](https://rawgit.com/ecordell/macaroon-compatibility/master/report.html) (may take some time to grok).
 
