@@ -11,12 +11,14 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ## Install libsodium
-RUN wget https://github.com/jedisct1/libsodium/releases/download/1.0.0/libsodium-1.0.0.tar.gz && \
-  tar xzvf libsodium-1.0.0.tar.gz && \
-  cd libsodium-1.0.0 && \
+ENV LIBSODIUM_VERSION 1.0.8
+
+RUN wget https://github.com/jedisct1/libsodium/releases/download/$LIBSODIUM_VERSION/libsodium-$LIBSODIUM_VERSION.tar.gz && \
+  tar xzvf libsodium-$LIBSODIUM_VERSION.tar.gz && \
+  cd libsodium-$LIBSODIUM_VERSION && \
   ./configure && \
   make && make check && sudo make install && \
-  cd .. && rm -rf libsodium-1.0.0 && \
+  cd .. && rm -rf libsodium-$LIBSODIUM_VERSION && \
   sudo ldconfig
 
 # Install Python
@@ -94,7 +96,7 @@ RUN go get launchpad.net/gorun && \
 
 # Install php-macaroons
 ADD implementations/php-macaroons /usr/src/implementations/php-macaroons
-RUN pecl install libsodium-0.1.3 && \
+RUN pecl install libsodium-1.0.2 && \
     echo "extension=libsodium.so" >> /etc/php5/cli/php.ini && \
     curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/bin/composer && \

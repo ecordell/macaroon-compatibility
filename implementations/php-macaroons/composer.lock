@@ -4,32 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "50a472ed74623abc53bab7a74d64e597",
+    "hash": "52e7690c4d2260477db94750dfa84b73",
+    "content-hash": "547bbce68f2a4eda64bba5e0b0c6281c",
     "packages": [
         {
             "name": "immense/macaroons",
-            "version": "0.5.3",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/immense/php-macaroons.git",
-                "reference": "bf1892e9315653dc9fbc705a9530ec06461c6d36"
+                "reference": "5f6eb221dfbb1b80c2c4afe973e13f6092ec456c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/immense/php-macaroons/zipball/bf1892e9315653dc9fbc705a9530ec06461c6d36",
-                "reference": "bf1892e9315653dc9fbc705a9530ec06461c6d36",
+                "url": "https://api.github.com/repos/immense/php-macaroons/zipball/5f6eb221dfbb1b80c2c4afe973e13f6092ec456c",
+                "reference": "5f6eb221dfbb1b80c2c4afe973e13f6092ec456c",
                 "shasum": ""
             },
             "require": {
-                "ext-libsodium": "0.1.3",
-                "php": ">=5.3.6",
-                "symfony/serializer": "2.*"
+                "ext-libsodium": "1.*",
+                "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.6.*",
-                "satooshi/php-coveralls": "0.6.*",
-                "symfony/debug": "2.*",
-                "symfony/stopwatch": "2.*"
+                "phpunit/phpunit": "4.*",
+                "satooshi/php-coveralls": "0.6.*"
             },
             "type": "library",
             "autoload": {
@@ -54,57 +52,7 @@
                 "authorization",
                 "macaroons"
             ],
-            "time": "2015-05-12 21:41:15"
-        },
-        {
-            "name": "symfony/serializer",
-            "version": "v2.6.7",
-            "target-dir": "Symfony/Component/Serializer",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Serializer.git",
-                "reference": "bb6b030d92f24dac37f1b992dbd7c52bca0796d0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Serializer/zipball/bb6b030d92f24dac37f1b992dbd7c52bca0796d0",
-                "reference": "bb6b030d92f24dac37f1b992dbd7c52bca0796d0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "~2.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Serializer\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Serializer Component",
-            "homepage": "https://symfony.com",
-            "time": "2015-05-02 15:18:45"
+            "time": "2015-12-24 00:33:40"
         }
     ],
     "packages-dev": [],
