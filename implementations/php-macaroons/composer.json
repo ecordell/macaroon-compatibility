@@ -1,5 +1,5 @@
 {
   "require": {
-    "immense/macaroons": "0.5.3"
+    "immense/macaroons": "1.0.0"
   }
 }
