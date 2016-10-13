@@ -6,7 +6,8 @@ RUN apt-get clean all && apt-get update && apt-get upgrade -y
 
 # Build Tools
 RUN apt-get update && \
-    apt-get install -y build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev pkg-config && \
+    apt-get install -y build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev pkg-config software-properties-common && \
+    apt-add-repository ppa:ubuntu-lxc/lxd-stable && \
     apt-get install -y make wget tar git curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -64,7 +65,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Rust
-ENV RUST_VERSION 1.8.0
+ENV RUST_VERSION 1.12.0
 RUN apt-get update && \
     curl -sO https://static.rust-lang.org/dist/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.gz && \
     tar -xvzf rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.gz && \
