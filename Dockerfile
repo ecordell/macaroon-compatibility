@@ -62,7 +62,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Rust
-ENV RUST_VERSION=1.8.0
+ENV RUST_VERSION 1.8.0
 RUN apt-get update && \
     curl -sO https://static.rust-lang.org/dist/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.gz && \
     tar -xvzf rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.gz && \
