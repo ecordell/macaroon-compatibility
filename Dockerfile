@@ -97,7 +97,7 @@ RUN go get launchpad.net/gorun && \
 
 # Install php-macaroons
 ADD implementations/php-macaroons /usr/src/implementations/php-macaroons
-RUN pecl install libsodium-1.0.2 && \
+RUN pecl install libsodium-1.0.6 && \
     echo "extension=libsodium.so" >> /etc/php5/cli/php.ini && \
     curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/bin/composer && \
